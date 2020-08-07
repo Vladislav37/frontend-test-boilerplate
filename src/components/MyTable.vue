@@ -4,7 +4,11 @@
     <table>
       <thead>
       <tr>
-        <th v-for="col in columns" v-bind:key="col">{{ col }}</th>
+        <th v-for="col in columns"
+            v-bind:key="col.idx"
+            @click="sortBy(col.desc)">
+          {{ col.name }}
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -41,17 +45,30 @@ export default {
         id: 0,
         employer: '',
         records: [],
-        columns: [ 'Имя', 'Телефон' ],
+        columns: [
+            {idx:0, name:'Имя', desc:'name'},
+            {idx:1, name:'Телефон', desc:'numberPhone'}
+        ],
         showModal: false,
     }),
     methods: {
         addRow () {
             this.name = this.$refs.name.value;
             this.numberPhone = this.$refs.numberPhone.value;
-            this.id = this.id++;
+            this.id = this.records.length;
             this.records.push({ id: this.id, name: this.name, numberPhone: this.numberPhone, employer:this.employer });
             this.showModal = false;
             this.name = '';
+            console.log(this.records);
+        },
+        sortBy (key) {
+            this.records.sort((a,b) => {
+                console.log(a);
+                console.log(b);
+                console.log(key);
+                return a[key] > b[key] ? -1 : 1;
+            })
+            console.log(this.records);
         }
     }
 };
@@ -60,6 +77,16 @@ export default {
 <style scoped>
 h1 {
   font-size: 30px;
+}
+
+th {
+  background-color: #42b983;
+  color: rgba(255, 255, 255, 0.66);
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 </style>
