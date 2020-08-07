@@ -4,8 +4,7 @@
     <table>
       <thead>
       <tr>
-        <th>Имя</th>
-        <th>Телефон</th>
+        <th v-for="col in columns" v-bind:key="col">{{ col }}</th>
       </tr>
       </thead>
       <tbody>
@@ -19,9 +18,15 @@
     </table>
     <transition v-if="showModal" name ="modal">
       <form>
-        <p>Привет</p>
         <input type="text" ref = "name"/>
         <input type="text" ref = "numberPhone"/>
+        <select ref="employer">
+          <option
+                  v-for="rec of records"
+                  :key="rec.id"
+                  :value="rec.id"
+          >{{rec.name}}</option>
+        </select>
         <button type="button" @click.prevent="addRow()">Сохранить</button>
       </form>
     </transition>
@@ -34,10 +39,9 @@ export default {
         name: '',
         numberPhone: '',
         id: 0,
-        records: [
-            /*{id: 1, name: 'Vlad', numberPhone: '123'},
-            {id: 2, name: 'ivan', numberPhone: '456'},*/
-        ],
+        employer: '',
+        records: [],
+        columns: [ 'Имя', 'Телефон' ],
         showModal: false,
     }),
     methods: {
@@ -45,8 +49,9 @@ export default {
             this.name = this.$refs.name.value;
             this.numberPhone = this.$refs.numberPhone.value;
             this.id = this.id++;
-            this.records.push({id: this.id, name: this.name, numberPhone: this.numberPhone});
+            this.records.push({ id: this.id, name: this.name, numberPhone: this.numberPhone, employer:this.employer });
             this.showModal = false;
+            this.name = '';
         }
     }
 };
