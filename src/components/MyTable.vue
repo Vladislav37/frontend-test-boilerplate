@@ -40,10 +40,10 @@
 <script>
 export default {
     data: () => ({
-        name: '',
-        numberPhone: '',
-        id: 0,
-        employer: '',
+        name: null,
+        numberPhone: null,
+        id: null,
+        employer: null,
         records: [],
         columns: [
             {idx:0, name:'Имя', desc:'name'},
@@ -58,8 +58,8 @@ export default {
     },
     mounted() {
         this.$nextTick(function () {
-            let cacheArr = JSON.parse(localStorage.getItem('recordsFromTable'));
-            if (cacheArr.length > 0) this.records = cacheArr;
+            let cacheRecords = JSON.parse(localStorage.getItem('recordsFromTable'));
+            if (cacheRecords.length > 0) this.records = cacheRecords;
         });
     },
     methods: {
@@ -73,7 +73,6 @@ export default {
             this.records.push({ id: this.id, name: this.name, numberPhone: this.numberPhone, employer:this.employer });
             this.showModal = false;
             this.name = '';
-            console.log(this.records);
         },
         sortBy (key) {
             if (key === 'name') {
