@@ -53,7 +53,19 @@ export default {
         orderSortName: 'desc',
         orderSortPhone: 'desc',
     }),
+    beforeMount() {
+        window.addEventListener('beforeunload', this.beforeRefresh);
+    },
+    mounted() {
+        this.$nextTick(function () {
+            let cacheArr = JSON.parse(localStorage.getItem('recordsFromTable'));
+            if (cacheArr.length > 0) this.records = cacheArr;
+        });
+    },
     methods: {
+        beforeRefresh () {
+            localStorage.setItem('recordsFromTable', JSON.stringify(this.records));
+        },
         addRow () {
             this.name = this.$refs.name.value;
             this.numberPhone = this.$refs.numberPhone.value;
