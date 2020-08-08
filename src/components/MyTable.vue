@@ -50,6 +50,8 @@ export default {
             {idx:1, name:'Телефон', desc:'numberPhone'}
         ],
         showModal: false,
+        orderSortName: 'desc',
+        orderSortPhone: 'desc',
     }),
     methods: {
         addRow () {
@@ -62,13 +64,21 @@ export default {
             console.log(this.records);
         },
         sortBy (key) {
+            if (key === 'name') {
+                this.orderSort('orderSortName', key);
+            } else if (key === 'numberPhone') {
+                this.orderSort('orderSortPhone', key);
+            }
+        },
+        orderSort (prop, key) {
             this.records.sort((a,b) => {
-                console.log(a);
-                console.log(b);
-                console.log(key);
-                return a[key] > b[key] ? -1 : 1;
-            })
-            console.log(this.records);
+                if (this[prop] === 'desc') {
+                    return a[key] > b[key] ? -1 : 1;
+                } else {
+                    return a[key] < b[key] ? -1 : 1;
+                }
+            });
+            this[prop] = (this[prop] === 'desc' ? 'asc' : 'desc');
         }
     }
 };
