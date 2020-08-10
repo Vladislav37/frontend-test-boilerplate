@@ -102,6 +102,7 @@ export default {
     methods: {
         selectEmployer (record) {
             this.selected = record.name;
+            this.employer = record.name;
         },
         showModalWindow () {
             this.visibleModalWindow = true;
