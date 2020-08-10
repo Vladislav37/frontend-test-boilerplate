@@ -34,17 +34,32 @@
             @addRecordFromModalWindow = "addNewRecordToGrid"
     >
         <form>
-            <input type="text" ref = "name"/>
-            <input type="text" ref = "numberPhone"/>
-            <select ref="employer">
-                <option
-                    v-for="rec of records"
-                    :key="rec.id"
-                    :value="rec.id"
-                >
-                    {{rec.name}}
-                </option>
-            </select>
+            <div></div>
+            <div>
+                <label>Имя</label>
+                <input type="text" ref="name"/>
+            </div>
+            <div>
+                <label>Телефон</label>
+                <input type="text" ref="numberPhone"/>
+            </div>
+            <div>
+                <label>Начальник</label>
+                <!--<select ref="employer">-->
+                    <!--<option-->
+                            <!--v-for="rec of records"-->
+                            <!--:key="rec.id"-->
+                            <!--:value="rec.id"-->
+                    <!--&gt;-->
+                        <!--{{rec.name}}-->
+                    <!--</option>-->
+                <!--</select>-->
+                <MySelect
+                        :options="records"
+                        :selected="selected"
+                        @select="selectEmployer"
+                />
+            </div>
         </form>
     </ModalWindow>
 
@@ -53,6 +68,7 @@
 
 <script>
 import ModalWindow from '@/components/ModalWindow'
+import MySelect from '@/components/SelectForModalWindow'
 
 export default {
     data: () => ({
@@ -68,9 +84,11 @@ export default {
         visibleModalWindow: false,
         orderSortName: 'desc',
         orderSortPhone: 'desc',
+        selected: '123',
     }),
     components: {
-        ModalWindow
+        ModalWindow,
+        MySelect
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.beforeRefresh);
@@ -82,6 +100,9 @@ export default {
         });
     },
     methods: {
+        selectEmployer (record) {
+            this.selected = record.name;
+        },
         showModalWindow () {
             this.visibleModalWindow = true;
         },
@@ -121,6 +142,7 @@ export default {
 </script>
 
 <style scoped>
+
 h1 {
   font-size: 30px;
 }

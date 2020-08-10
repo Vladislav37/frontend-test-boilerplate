@@ -1,27 +1,27 @@
 <template>
     <transition name ="modal">
-        <div>
-        <div class="headerModalWindow"></div>
-            <span>{{modalWindowTitle}}</span>
-            <span>
-                <i
-                        class="material-icons"
-                        @click="closeWindow"
+        <div class=wrapWin >
+            <div class="headerModalWindow"></div>
+                <h3>{{modalWindowTitle}}</h3>
+                <span>
+                    <i
+                            class="material-icons"
+                            @click="closeWindow"
+                    >
+                        close
+                    </i>
+                </span>
+            <div class="contentModalWindow">
+                <slot></slot>
+            </div>
+            <div class="footerModalWindow">
+                <button
+                        type="button"
+                        @click="addRow"
                 >
-                    close
-                </i>
-            </span>
-        <div class="contentModalWindow">
-            <slot></slot>
-        </div>
-        <div class="footerModalWindow">
-            <button
-                    type="button"
-                    @click="addRow"
-            >
-                {{titleButton}}
-            </button>
-        </div>
+                    {{titleButton}}
+                </button>
+            </div>
         </div>
     </transition>
 </template>
@@ -54,5 +54,8 @@
 </script>
 
 <style scoped>
+    i {
+        cursor: pointer;
+    }
 
 </style>
