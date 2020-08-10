@@ -1,6 +1,11 @@
 <template>
   <div>
-    <button type="button" @click="showModal = true">Добавить</button>
+    <button
+        type="button"
+        @click="showModalWindow"
+    >
+        Добавить
+    </button>
     <table>
       <thead>
       <tr>
@@ -20,24 +25,35 @@
       </tr>
       </tbody>
     </table>
-    <transition v-if="showModal" name ="modal">
-      <form>
-        <input type="text" ref = "name"/>
-        <input type="text" ref = "numberPhone"/>
-        <select ref="employer">
-          <option
-                  v-for="rec of records"
-                  :key="rec.id"
-                  :value="rec.id"
-          >{{rec.name}}</option>
-        </select>
-        <button type="button" @click.prevent="addRow()">Сохранить</button>
-      </form>
-    </transition>
+
+    <ModalWindow
+            v-if="visibleModalWindow"
+            titleButton = "Сохранить"
+            modalWindowTitle = "Дополнительная информация"
+            @closeModalWindow = "closeModalWindow"
+            @addRecordFromModalWindow = "addNewRecordToGrid"
+    >
+        <form>
+            <input type="text" ref = "name"/>
+            <input type="text" ref = "numberPhone"/>
+            <select ref="employer">
+                <option
+                    v-for="rec of records"
+                    :key="rec.id"
+                    :value="rec.id"
+                >
+                    {{rec.name}}
+                </option>
+            </select>
+        </form>
+    </ModalWindow>
+
   </div>
 </template>
 
 <script>
+import ModalWindow from '@/components/ModalWindow'
+
 export default {
     data: () => ({
         name: null,
@@ -49,10 +65,13 @@ export default {
             {idx:0, name:'Имя', desc:'name'},
             {idx:1, name:'Телефон', desc:'numberPhone'}
         ],
-        showModal: false,
+        visibleModalWindow: false,
         orderSortName: 'desc',
         orderSortPhone: 'desc',
     }),
+    components: {
+        ModalWindow
+    },
     beforeMount() {
         window.addEventListener('beforeunload', this.beforeRefresh);
     },
@@ -63,16 +82,22 @@ export default {
         });
     },
     methods: {
-        beforeRefresh () {
-            localStorage.setItem('recordsFromTable', JSON.stringify(this.records));
+        showModalWindow () {
+            this.visibleModalWindow = true;
         },
-        addRow () {
+        closeModalWindow () {
+            this.visibleModalWindow = false;
+        },
+        addNewRecordToGrid () {
             this.name = this.$refs.name.value;
             this.numberPhone = this.$refs.numberPhone.value;
             this.id = this.records.length;
             this.records.push({ id: this.id, name: this.name, numberPhone: this.numberPhone, employer:this.employer });
-            this.showModal = false;
+            this.visibleModalWindow = false;
             this.name = '';
+        },
+        beforeRefresh () {
+            localStorage.setItem('recordsFromTable', JSON.stringify(this.records));
         },
         sortBy (key) {
             if (key === 'name') {
