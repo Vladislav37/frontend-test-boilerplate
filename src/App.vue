@@ -8,9 +8,12 @@
 import MyTable from './components/MyTable.vue'
 
 export default {
-  components: {
+    components: {
       MyTable
-  }
+    },
+    beforeCreate: function() {
+        document.body.className = 'classForBackgroundBody';
+    },
 }
 </script>
 
@@ -22,5 +25,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.classForBackgroundBody {
+    background: linear-gradient( #bbb, transparent 1px), linear-gradient( 90deg, #bbb, transparent 1px);
+    background-size: 15px 15px;
+    background-position: center center;
 }
 </style>

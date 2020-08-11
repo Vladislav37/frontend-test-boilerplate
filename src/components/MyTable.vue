@@ -1,74 +1,78 @@
 <template>
-  <div>
-    <button
-        type="button"
-        @click="showModalWindow"
-    >
-        Добавить
-    </button>
-    <table>
-      <thead>
-      <tr>
-        <th v-for="col in columns"
-            v-bind:key="col.idx"
-            @click="sortBy(col.desc)">
-          {{ col.name }}
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-        v-for="record in records"
-        :key="record.id">
-        <td>{{ record.name }}</td>
-        <td>{{ record.numberPhone }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="body">
+        <div class="commonDivForButtonAndGrid">
+            <button
+                class="addButton"
+                type="button"
+                @click="showModalWindow"
+            >
+                Добавить
+            </button>
+            <div class="gridDiv">
+                <table>
+                    <thead>
+                        <tr>
+                            <th v-for="col in columns"
+                                v-bind:key="col.idx"
+                                @click="sortBy(col.desc)">
+                                {{ col.name }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                                v-for="record in records"
+                                :key="record.id">
+                            <td>{{ record.name }}</td>
+                            <td>{{ record.numberPhone }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <ModalWindow
-            v-if="visibleModalWindow"
-            titleButton = "Сохранить"
-            modalWindowTitle = "Дополнительная информация"
-            @closeModalWindow = "closeModalWindow"
-            @addRecordFromModalWindow = "addNewRecordToGrid"
-    >
-        <form>
-            <div></div>
-            <div>
-                <label>Имя</label>
-                <input type="text" ref="name"/>
-            </div>
-            <div>
-                <label>Телефон</label>
-                <input type="text" ref="numberPhone"/>
-            </div>
-            <div>
-                <label>Начальник</label>
-                <!--<select ref="employer">-->
-                    <!--<option-->
-                            <!--v-for="rec of records"-->
-                            <!--:key="rec.id"-->
-                            <!--:value="rec.id"-->
-                    <!--&gt;-->
-                        <!--{{rec.name}}-->
-                    <!--</option>-->
-                <!--</select>-->
-                <MySelect
-                        :options="records"
-                        :selected="selected"
-                        @select="selectEmployer"
-                />
-            </div>
-        </form>
-    </ModalWindow>
-
-  </div>
+        <ModalWindow
+                v-if="visibleModalWindow"
+                titleButton = "Сохранить"
+                modalWindowTitle = "Добавление пользователя"
+                @closeModalWindow = "closeModalWindow"
+                @addRecordFromModalWindow = "addNewRecordToGrid"
+        >
+            <form>
+                <div class="divForInput">
+                    <label>Имя:</label>
+                    <input type="text" ref="name"/>
+                </div>
+                <div class="divForInput">
+                    <label>Телефон:</label>
+                    <input type="text" ref="numberPhone"/>
+                </div>
+                <div class="divForInput">
+                    <label>Начальник:</label>
+                    <select ref="employer">
+                        <option
+                                v-for="rec of records"
+                                :key="rec.id"
+                                :value="rec.id"
+                        >
+                            {{rec.name}}
+                        </option>
+                    </select>
+                    <!-- Попытка сделать кастомный select :) -->
+                    <!--<MySelect-->
+                            <!--:options="records"-->
+                            <!--:selected="selected"-->
+                            <!--@select="selectEmployer"-->
+                    <!--/>-->
+                </div>
+            </form>
+        </ModalWindow>
+    </div>
 </template>
 
 <script>
 import ModalWindow from '@/components/ModalWindow'
-import MySelect from '@/components/SelectForModalWindow'
+//import MySelect from '@/components/SelectForModalWindow'
 
 export default {
     data: () => ({
@@ -88,7 +92,7 @@ export default {
     }),
     components: {
         ModalWindow,
-        MySelect
+        //MySelect
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.beforeRefresh);
@@ -100,10 +104,10 @@ export default {
         });
     },
     methods: {
-        selectEmployer (record) {
-            this.selected = record.name;
-            this.employer = record.name;
-        },
+        // selectEmployer (record) {
+        //     this.selected = record.name;
+        //     this.employer = record.name;
+        // },
         showModalWindow () {
             this.visibleModalWindow = true;
         },
@@ -143,19 +147,59 @@ export default {
 </script>
 
 <style scoped>
+.divForInput {
+    display: flex;
+    padding: 10px 10px;
+}
+
+.divForInput label {
+    flex: 30%;
+}
+
+.divForInput input {
+    flex: 50%;
+}
+
+.divForInput select {
+    flex: 70%;
+}
+
+.commonDivForButtonAndGrid {
+    width: 50%;
+}
+
+.addButton {
+    color: #fff;
+    background: #42b983;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
 
 h1 {
   font-size: 30px;
 }
 
-th {
-  background-color: #42b983;
-  color: rgba(255, 255, 255, 0.66);
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+table {
+    border: 2px solid #42b983;
+    border-radius: 3px;
+    background-color: #fff;
 }
 
+th {
+    background-color: #42b983;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+th,
+td {
+    min-width: 120px;
+    padding: 10px 20px;
+}
 </style>
