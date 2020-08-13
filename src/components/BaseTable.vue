@@ -1,28 +1,30 @@
 <template>
     <div class="body">
-        <div class="commonDivForButtonAndGrid">
+        <div class="common-div-for-button-and-grid">
             <button
-                class="addButton"
+                class="add-button"
                 type="button"
                 @click="showModalWindow"
             >
                 Добавить
             </button>
-            <div class="gridDiv">
+            <div class="grid-div">
                 <table>
                     <thead>
                         <tr>
                             <th v-for="col in columns"
                                 v-bind:key="col.idx"
-                                @click="sortBy(col.desc)">
+                                @click="sortBy(col.desc)"
+                            >
                                 {{ col.name }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                                v-for="record in records"
-                                :key="record.id">
+                            v-for="record in records"
+                            :key="record.id"
+                        >
                             <td>{{ record.name }}</td>
                             <td>{{ record.numberPhone }}</td>
                         </tr>
@@ -31,68 +33,62 @@
             </div>
         </div>
 
-        <ModalWindow
-                v-if="visibleModalWindow"
-                titleButton = "Сохранить"
-                modalWindowTitle = "Добавление пользователя"
-                @closeModalWindow = "closeModalWindow"
-                @addRecordFromModalWindow = "addNewRecordToGrid"
+        <BaseModalWindow
+            v-if="visibleModalWindow"
+            titleButton = "Сохранить"
+            modalWindowTitle = "Добавление пользователя"
+            @closeModalWindow = "closeModalWindow"
+            @addRecordFromModalWindow = "addNewRecordToGrid"
         >
             <form>
-                <div class="divForInput">
+                <div class="div-for-input">
                     <label>Имя:</label>
                     <input type="text" ref="name"/>
                 </div>
-                <div class="divForInput">
+                <div class="div-for-input">
                     <label>Телефон:</label>
                     <input type="text" ref="numberPhone"/>
                 </div>
-                <div class="divForInput">
+                <div class="div-for-input">
                     <label>Начальник:</label>
                     <select ref="employer">
                         <option
-                                v-for="rec of records"
-                                :key="rec.id"
-                                :value="rec.id"
+                            v-for="rec of records"
+                            :key="rec.id"
+                            :value="rec.id"
                         >
                             {{rec.name}}
                         </option>
                     </select>
-                    <!-- Попытка сделать кастомный select :) -->
-                    <!--<MySelect-->
-                            <!--:options="records"-->
-                            <!--:selected="selected"-->
-                            <!--@select="selectEmployer"-->
-                    <!--/>-->
                 </div>
             </form>
-        </ModalWindow>
+        </BaseModalWindow>
     </div>
 </template>
 
 <script>
-import ModalWindow from '@/components/ModalWindow'
-//import MySelect from '@/components/SelectForModalWindow'
+import BaseModalWindow from '@/components/BaseModalWindow'
 
 export default {
-    data: () => ({
-        name: null,
-        numberPhone: null,
-        id: null,
-        employer: null,
-        records: [],
-        columns: [
-            {idx:0, name:'Имя', desc:'name'},
-            {idx:1, name:'Телефон', desc:'numberPhone'}
-        ],
-        visibleModalWindow: false,
-        orderSortName: 'desc',
-        orderSortPhone: 'desc',
-        selected: '123',
-    }),
+    data: function() {
+        return {
+            name: null,
+            numberPhone: null,
+            id: null,
+            employer: null,
+            records: [],
+            columns: [
+                {idx:0, name:'Имя', desc:'name'},
+                {idx:1, name:'Телефон', desc:'numberPhone'}
+            ],
+            visibleModalWindow: false,
+            orderSortName: 'desc',
+            orderSortPhone: 'desc',
+            selected: '123',
+        };
+    },
     components: {
-        ModalWindow,
-        //MySelect
+        BaseModalWindow
     },
     beforeMount() {
         window.addEventListener('beforeunload', this.beforeRefresh);
@@ -100,21 +96,19 @@ export default {
     mounted() {
         this.$nextTick(function () {
             let cacheRecords = JSON.parse(localStorage.getItem('recordsFromTable'));
-            if (cacheRecords.length > 0) this.records = cacheRecords;
+            if (cacheRecords.length > 0) {
+                this.records = cacheRecords;
+            }
         });
     },
     methods: {
-        // selectEmployer (record) {
-        //     this.selected = record.name;
-        //     this.employer = record.name;
-        // },
-        showModalWindow () {
+        showModalWindow() {
             this.visibleModalWindow = true;
         },
-        closeModalWindow () {
+        closeModalWindow() {
             this.visibleModalWindow = false;
         },
-        addNewRecordToGrid () {
+        addNewRecordToGrid() {
             this.name = this.$refs.name.value;
             this.numberPhone = this.$refs.numberPhone.value;
             this.id = this.records.length;
@@ -122,17 +116,17 @@ export default {
             this.visibleModalWindow = false;
             this.name = '';
         },
-        beforeRefresh () {
+        beforeRefresh() {
             localStorage.setItem('recordsFromTable', JSON.stringify(this.records));
         },
-        sortBy (key) {
+        sortBy(key) {
             if (key === 'name') {
                 this.orderSort('orderSortName', key);
             } else if (key === 'numberPhone') {
                 this.orderSort('orderSortPhone', key);
             }
         },
-        orderSort (prop, key) {
+        orderSort(prop, key) {
             this.records.sort((a,b) => {
                 if (this[prop] === 'desc') {
                     return a[key] > b[key] ? -1 : 1;
@@ -147,28 +141,28 @@ export default {
 </script>
 
 <style scoped>
-.divForInput {
+.div-for-input {
     display: flex;
     padding: 10px 10px;
 }
 
-.divForInput label {
+.div-for-input label {
     flex: 30%;
 }
 
-.divForInput input {
+.div-for-input input {
     flex: 50%;
 }
 
-.divForInput select {
+.div-for-input select {
     flex: 70%;
 }
 
-.commonDivForButtonAndGrid {
+.common-div-for-button-and-grid {
     width: 50%;
 }
 
-.addButton {
+.add-button {
     color: #fff;
     background: #42b983;
     border: 0;

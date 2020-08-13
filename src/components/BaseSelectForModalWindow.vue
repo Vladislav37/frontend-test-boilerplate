@@ -1,12 +1,14 @@
 <template>
-    <div class="mySelect">
+    <div class="my-select">
         <p
-                class="titleSelect"
-                @click="visibleOptions = !visibleOptions"
-        >{{selected}}</p>
+            class="title-select"
+            @click="hideShowOptions"
+        >
+            {{selected}}
+        </p>
         <div
-                class="option"
-                v-if="visibleOptions"
+            class="option"
+            v-if="visibleOptions"
         >
             <p
                 v-for="option in options"
@@ -26,7 +28,7 @@
             options: {
                 type: Array,
                 default() {
-                    return [];
+                    return {};
                 }
             },
             selected: {
@@ -34,25 +36,30 @@
                 default: ''
             }
         },
-        data: () =>({
-            visibleOptions: false,
-        }),
+        data: function() {
+            return {
+                visibleOptions: false,
+            }
+        },
         methods: {
-            selectOption (option) {
+            hideShowOptions() {
+                this.visibleOptions = !this.visibleOptions;
+            },
+            selectOption(option) {
                 this.$emit('select', option);
                 this.visibleOptions = false;
             }
-        },
+        }
     }
 </script>
 
-<style>
-    .mySelect {
+<style scoped>
+    .my-select {
         position: relative;
         width: 150px;
     }
 
-    .titleSelect {
+    .title-select {
         border: solid 1px #aeaeae;
         cursor: pointer;
     }

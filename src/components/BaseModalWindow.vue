@@ -1,27 +1,27 @@
 <template>
     <transition name ="modal">
-        <div class="modalWindowMask">
-            <div class=wrapWindow>
-                <div class="containerWindow">
-                    <div class="headerModalWindow">
+        <div class="modal-window-mask">
+            <div class="wrap-window">
+                <div class="container-window">
+                    <div class="header-modal-window">
                         <h3>{{modalWindowTitle}}</h3>
                         <span>
                             <i
-                                    class="material-icons"
-                                    @click="closeWindow"
+                                class="material-icons"
+                                @click="closeWindow"
                             >
                                 close
                             </i>
                         </span>
                     </div>
-                    <div class="contentModalWindow">
+                    <div class="content-modal-window">
                         <slot></slot>
                     </div>
-                    <div class="footerModalWindow">
+                    <div class="footer-modal-window">
                         <button
-                                class="modalWindowButton"
-                                type="button"
-                                @click="addRow"
+                            class="modal-window-button"
+                            type="button"
+                            @click="addRow"
                         >
                             {{titleButton}}
                         </button>
@@ -45,14 +45,14 @@
                 default: 'Ок',
             },
         },
-        data: () => ({
-
-        }),
+        data: function() {
+            return {};
+        },
         methods: {
-            closeWindow () {
+            closeWindow() {
                 this.$emit('closeModalWindow');
             },
-            addRow () {
+            addRow() {
                 this.$emit('addRecordFromModalWindow');
             },
         }
@@ -60,7 +60,7 @@
 </script>
 
 <style scoped>
-.modalWindowMask {
+.modal-window-mask {
     position: fixed;
     z-index: 9998;
     top: 0;
@@ -72,12 +72,12 @@
     transition: opacity 0.3s ease;
 }
 
-.wrapWindow {
+.wrap-window {
     display: table-cell;
     vertical-align: middle;
 }
 
-.containerWindow {
+.container-window {
     width: 300px;
     margin: 0px auto;
     /*padding: 20px 30px;*/
@@ -88,7 +88,7 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
-.headerModalWindow {
+.header-modal-window {
     padding: 0px 5px 0 5px;
     margin-top: 0;
     background-color: #42b983;
@@ -96,15 +96,15 @@
     overflow: hidden;
 }
 
-.headerModalWindow h3 {
+.header-modal-window h3 {
     float: left;
 }
 
-.headerModalWindow span {
+.header-modal-window span {
     right: 0px;
 }
 
-.modalWindowButton {
+.modal-window-button {
     color: #fff;
     background: #42b983;
     border: 0;
@@ -113,7 +113,7 @@
     cursor: pointer;
 }
 
-.modalWindowButton:hover {
+.modal-window-button:hover {
     background: #3DB4B2;
 }
 

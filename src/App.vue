@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <MyTable />
+    <BaseTable />
   </div>
 </template>
 
 <script>
-import MyTable from './components/MyTable.vue'
+import BaseTable from './components/BaseTable.vue'
 
 export default {
     components: {
-      MyTable
+        BaseTable
     },
     beforeCreate: function() {
-        document.body.className = 'classForBackgroundBody';
+        document.body.className = 'class-for-background-body';
     },
 }
 </script>
@@ -27,7 +27,7 @@ export default {
   margin-top: 60px;
 }
 
-.classForBackgroundBody {
+.class-for-background-body {
     background: linear-gradient( #bbb, transparent 1px), linear-gradient( 90deg, #bbb, transparent 1px);
     background-size: 15px 15px;
     background-position: center center;
